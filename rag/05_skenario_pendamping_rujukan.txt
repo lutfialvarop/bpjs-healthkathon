@@ -1,0 +1,179 @@
+#TITLE: SKENARIO_4_PENDAMPING_RUJUKAN
+#INTENT: BUAT_ANTREAN, BUAT_BOOKING, PENDAMPING_RUJUKAN, DAFTAR_FASKES, BUAT_JADWAL
+#KEYWORDS: buat antrean, buat booking, daftar faskes, daftar kontrol, buat jadwal dokter, pendamping rujukan, faskes tingkat satu, fktp, keluhan, poli, tanggal, saya sakit tolong daftarkan, cek dokter yang tersedia, daftar diri ke faskes tingkat satu, mendaftar diri ke faskes tk1
+
+Skenario 4: Pendamping Rujukan (Pembuatan atau Pembatalan Request Antrean di Faskes TK1)
+
+Deskripsi:
+- Skenario ini digunakan ketika user ingin:
+  - Dibuatkan ANTREAN / BOOKING di Fasilitas Kesehatan Tingkat Pertama (Faskes TK1) yang SUDAH AKTIF di data peserta.
+  - Mengubah antrean dengan cara membatalkan request lama dan membuat yang baru.
+- Contoh ucapan user:
+  - “Saya harus mengambil antrean faskes tingkat 1.”
+  - “Tolong buatkan jadwal dengan dokter di faskes saya.”
+  - “Daftarkan saya kontrol di faskes tingkat satu.”
+  - “Saya kurang enak badan, tolong buatkan antrean ya.”
+  - “Apakah bisa dibantu untuk daftar diri untuk ke faskes tingkat satu?”
+  - “Cek dokter yang tersedia dan buatkan jadwal di faskes saya.”
+
+Catatan penting:
+- Jika user hanya bertanya “dokter yang tersedia” TANPA konteks antrean/jadwal → bisa jadi di luar cakupan (lihat SYSTEM_RULES).
+- Jika user menyebut keluhan kesehatan DAN meminta dibuatkan antrean → fokus pada pembuatan antrean (bukan diagnosis).
+- Dalam prototipe ini **Faskes TK1 aktif DIASUMSIKAN SELALU TERSEDIA** di Data Peserta (misalnya pada kartu KIS atau layar peserta).  
+  → LLM **TIDAK BOLEH** meminta user menyebutkan nama faskes kalau Faskes TK1 aktif sudah terbaca dari UI.
+
+==================================================
+A. Jika User PUNYA Active Request (Antrean Aktif)
+==================================================
+
+1. LLM HARUS:
+   - Mengecek apakah ada antrean aktif di Faskes TK1 (misalnya dengan membaca konten elemen #ticketView).
+   - Jika ADA, bacakan detail antrean aktif:
+     - Poli.
+     - Faskes.
+     - Tanggal kunjungan.
+     - Jam kunjungan.
+     - Tenaga medis / dokter (jika ada).
+     - Keluhan yang tersimpan.
+     - Nomor antrean.
+     - Sisa antrean/pasien yang sedang dilayani.
+
+2. Jawaban ke user harus menjelaskan dengan bahasa sederhana bahwa antrean sudah ada, misalnya:
+   - “Saat ini Anda sudah memiliki antrean aktif di [nama faskes], tanggal [X] pukul [Y] di [poli Z].”
+
+3. LLM HARUS bertanya dengan jelas:
+   - “Apakah Anda ingin membatalkan antrean tersebut dan membuat antrean baru?”
+
+4. Jika user SETUJU:
+   - Lakukan aksi pembatalan request aktif (sesuai kemampuan prototipe / UI).
+   - Setelah berhasil dibatalkan → lanjut ke bagian C (Membuat Request Baru).
+
+5. Jika user TIDAK SETUJU:
+   - Jangan membuat request baru.
+   - Sampaikan:
+     - “Baik, antrean Anda yang sekarang tetap dipertahankan.”
+
+==================================================
+B. Jika User TIDAK PUNYA Active Request
+==================================================
+
+1. Jika setelah dicek TIDAK ADA antrean aktif:
+   - Sampaikan:
+     - “Saat ini Anda belum memiliki permintaan antrean aktif di Faskes Tingkat 1.”
+
+2. Tanyakan:
+   - “Apakah Anda ingin saya bantu membuat antrean baru di Faskes Tingkat 1 Anda yang sudah terdaftar?”
+
+3. Jika user setuju:
+   - Lanjut ke bagian C.
+
+4. Jika user menolak:
+   - Akhiri dengan:
+     - “Baik, jika nanti Anda ingin membuat antrean, silakan beritahu saya.”
+
+==================================================
+C. Membuat Request Antrean Baru
+==================================================
+
+**PRINSIP UTAMA:**
+- Faskes TK1 aktif diambil dari UI (misalnya teks di kartu KIS atau layar Peserta).
+- LLM **TIDAK BOLEH** mengatakan:
+  - “Apakah Anda sudah memiliki faskes yang ditentukan? Jika ya, sebutkan nama faskes tersebut.”
+- Selama UI sudah menampilkan “Faskes TK1 Aktif”, LLM harus:
+  - Menggunakan faskes tersebut sebagai default,
+  - Hanya meminta konfirmasi, BUKAN meminta user menghafalkan/mengetik nama faskes.
+
+Langkah-langkah yang perlu diikuti LLM:
+
+1. Konfirmasi Faskes TK1 dari UI:
+   - BACA faskes TK1 aktif dari UI:
+     - Contoh sumber: elemen teks “Faskes TK1 Aktif” seperti `#kisFaskesText` atau `#participantFaskesText`.
+   - Jika faskes berhasil dibaca, LLM HARUS menjawab dengan pola:
+     - “Faskes Tingkat Pertama Anda yang aktif saat ini adalah [NAMA FASKES].”
+     - “Saya akan membuatkan antrean di faskes tersebut. Apakah benar Anda ingin berobat di [NAMA FASKES] ini?”
+   - LLM TIDAK BOLEH meminta user menyebutkan nama faskes selama nama tersebut sudah terbaca dari UI.
+   - HANYA jika UI benar-benar tidak menampilkan Faskes TK1 aktif (kasus error):
+     - LLM boleh meminta user menyebutkan faskes secara eksplisit, dengan menandai bahwa sistem tidak dapat membaca faskes aktif.
+
+2. Minta Tanggal Kunjungan:
+   - Setelah faskes dikonfirmasi, TANYAKAN:
+     - “Tanggal berapa Anda ingin berobat atau kontrol?”
+   - Pastikan tanggal valid (tidak di masa lalu, dan mengikuti batasan UI jika ada).
+   - Dalam konteks UI prototipe (dropdown “Hari ini / Besok”), LLM boleh menyederhanakan:
+     - “Apakah Anda ingin berobat hari ini atau besok?”
+
+3. Minta Poli:
+   - Tanyakan:
+     - “Anda ingin ke poli apa? Misalnya poli umum, poli gigi, atau lainnya.”
+   - Set poli sesuai pilihan user (misalnya mengisi `#poliSelect` di UI).
+
+4. Minta Keluhan:
+   - Tanyakan:
+     - “Keluhan apa yang ingin Anda sampaikan? Cukup singkat saja.”
+   - Simpan keluhan sebagai bagian dari request (diisi ke field keluhan di UI).
+   - LLM TIDAK BOLEH memberikan diagnosis atau menyimpulkan penyakit dari keluhan ini.
+
+5. Pilih Tenaga Medis / Dokter:
+   - Jika UI menyediakan daftar tenaga medis (misalnya pada modal dokter):
+     - Buka daftar tenaga medis/dokter.
+     - Jika user menyebut nama dokter spesifik:
+       - Pilih dokter sesuai nama tersebut (jika tersedia).
+     - Jika user TIDAK menyebut nama:
+       - Pilih opsi default atau dokter pertama yang tersedia.
+       - Jelaskan dengan jujur:
+         - “Saya pilihkan tenaga medis yang tersedia di sistem untuk jadwal ini.”
+
+6. Konfirmasi Ringkasan Request:
+   - Sebelum submit, LLM HARUS merangkum:
+     - Nama Faskes.
+     - Tanggal kunjungan.
+     - Poli.
+     - Keluhan singkat.
+     - Tenaga Medis (jika ada).
+   - Tanyakan:
+     - “Apakah sudah benar? Jika sudah, saya akan lanjutkan membuat antrean.”
+
+7. Submit Request:
+   - Jalankan aksi submit (misalnya klik tombol `#saveButton` di UI).
+   - Setelah submit, baca kembali informasi antrean dari UI:
+     - Nomor antrean (`ticketNumber` atau setara).
+     - Tanggal & jam.
+     - Poli.
+     - Faskes.
+     - Tenaga Medis.
+   - Sampaikan ke user:
+     - “Antrean berhasil dibuat. Nomor antrean Anda [NOMOR] di [POLI], tanggal [TANGGAL] pukul [JAM] di [NAMA FASKES].”
+
+==================================================
+D. Batasan & Larangan Tambahan
+==================================================
+
+- LLM TIDAK BOLEH:
+  - Membuat beberapa request antrean baru tanpa menjelaskan dan meminta persetujuan user.
+  - Membuat request di luar Faskes Tingkat 1 pada skenario ini.
+  - Mengubah data medis/user di luar keluhan yang diinput user dan kebutuhan antrean.
+  - Mengatakan:
+    - “Apakah Anda sudah memiliki faskes yang ditentukan? Jika ya, sebutkan nama faskes tersebut.”
+    - atau kalimat sejenis yang menyuruh user menyebutkan nama faskes,
+    SELAMA Faskes TK1 aktif sudah dapat dibaca dari UI.
+- Jika alur UI tidak menyediakan data tertentu (misalnya nama dokter tidak tampil):
+  - Jangan mengarang nama.
+  - Hanya jelaskan informasi yang benar-benar ada di UI / RAG.
+
+==================================================
+Contoh Respons yang DIINGINKAN
+==================================================
+
+User:
+- “Saya merasa kurang enak badan.”
+  → (Ditangani oleh SYSTEM_RULES sebagai di luar cakupan medis murni.)
+
+User:
+- “Apakah bisa dibantu untuk daftar diri untuk ke faskes tingkat satu?”
+
+LLM (dengan skenario ini):
+- “Faskes Tingkat Pertama Anda yang aktif saat ini adalah **KLINIK PRATAMA IRFANI**.
+   Saya bisa bantu membuatkan antrean di faskes tersebut.
+   Tanggal berapa Anda ingin berobat, hari ini atau besok?”
+
+(BUKAN: “Apakah Anda sudah memiliki faskes yang ditentukan? Jika ya, sebutkan nama faskes tersebut.”)

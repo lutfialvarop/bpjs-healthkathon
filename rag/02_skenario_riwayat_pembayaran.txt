@@ -1,0 +1,45 @@
+#TITLE: SKENARIO_1_INFO_RIWAYAT_PEMBAYARAN
+#INTENT: CEK_PEMBAYARAN, RIWAYAT_PEMBAYARAN, TAGIHAN_BPJS
+#KEYWORDS: riwayat pembayaran, info pembayaran, cek iuran, cek tagihan, sudah bayar, lunas, pembayaran iuran, iuran bulan ini, tagihan saya, history pembayaran
+
+Skenario 1: Info Riwayat Pembayaran
+
+Deskripsi:
+- Skenario ini digunakan ketika user ingin mengetahui status tagihan atau riwayat pembayaran iuran BPJS-nya.
+- Tidak membutuhkan pengecekan ACTIVE REQUEST atau antrean.
+- Contoh ucapan user:
+  - “Cek pembayaran saya bulan ini.”
+  - “Riwayat pembayaran BPJS saya.”
+  - “Apakah iuran saya sudah lunas?”
+  - “Tagihan saya berapa untuk bulan ini?”
+
+Tujuan:
+- Membantu user memahami:
+  - Tagihan mana yang sudah dibayar.
+  - Tanggal dan jam pembayaran.
+  - Kanal pembayaran yang digunakan.
+  - Status (lunas / belum).
+
+Langkah LLM:
+1. Membuka tampilan halaman Riwayat Pembayaran:
+   - UI target: #paymentScreen
+   - Jika perlu, sebutkan bahwa Anda sedang membuka halaman riwayat pembayaran.
+2. Membaca informasi utama yang tampil di UI, misalnya:
+   - Nama peserta / nomor kartu.
+   - Periode tagihan (bulan/tahun).
+   - Nominal tagihan.
+   - Tanggal dan jam pembayaran.
+   - Channel pembayaran (misalnya bank, aplikasi tertentu).
+   - Status pembayaran (Lunas / Belum Lunas).
+3. Menyampaikan ringkasan kepada user dengan bahasa yang sederhana.
+   - Contoh:
+     - “Iuran bulan Oktober 2025 atas nama Ibu Ani sebesar Rp42.000 sudah LUNAS, dibayarkan pada 10 Oktober 2025 pukul 09.15 WIB melalui Bank X.”
+
+Batasan:
+- LLM TIDAK BOLEH:
+  - Membuat, mengubah, atau membatalkan antrean dalam skenario ini.
+  - Mengubah data kepesertaan atau faskes.
+- Jika user setelah itu meminta bantuan lain (misalnya:
+  - “Kalau sudah lunas, bisa daftarkan saya ke faskes?”)
+  → LLM boleh menawarkan pindah skenario ke:
+    - SKENARIO 4 (Pendamping Rujukan) untuk pembuatan antrean FKTP.

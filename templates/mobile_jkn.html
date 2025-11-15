@@ -1,0 +1,604 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <link rel="stylesheet" href="mobile_jkn.css"/>
+</head>
+<body>
+  <div class="screen">
+    <div class="top-hero">
+      <div class="logo-jkn"><img src="{LOGO_JKN}" alt="logo"/></div>
+      <div class="badges">
+        <img src="{HEADER_BADGE}" alt="badge"/>
+        <img src="{AVATAR_IMG}" alt="avatar"/>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="agentic-frame">
+        <div class="wave-icon">🔊</div>
+        <div class="agentic-text">
+          <div class="mode-title">Mode Lansia <span class="toggle-switch"></span></div>
+          <div class="mode-sub">Mode Aksesibilitas untuk Lansia dengan Agentic AI</div>
+        </div>
+      </div>
+
+      <!-- Chat container (scrollable area, hidden by default) -->
+      <div id="chatContainer" class="chat-container hidden">
+        <div id="chatArea" class="chat-area"></div>
+      </div>
+
+      <!-- Floating mic (hidden by default) -->
+      <div class="mic-wrapper hidden" id="micWrapper">
+        <div class="mic-circle" id="micButton">🎤</div>
+        <div class="mic-text" id="micHint">Klik untuk mulai berbicara</div>
+      </div>
+
+      <div class="greet">
+        <div>
+          <div class="hi">Hi, STEFANUS <span class="badge-ok">✓</span></div>
+          <div class="sub">Semua Keluarga Anda Terlindungi (Aktif)</div>
+        </div>
+        <div class="version">v4.13.2</div>
+      </div>
+
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-ill"><img src="{CARD_ILLUSTR}" alt=""></div>
+          <div>
+            <div class="card-title">Antrean Online</div>
+            <div class="card-desc">Untuk kunjungan lebih efisien tanpa harus menunggu lama.</div>
+            <a class="cta" href="#" onclick="showModal(event)">Ambil Antrean</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature tiles (inject from .py as a ready-made HTML string) -->
+      <div class="grid">
+        {TILES_HTML}
+      </div>
+    </div>
+
+    <!-- Bottom nav (inject from .py as a ready-made HTML string) -->
+    <div class="bottom-nav">{NAV_HTML}</div>
+  </div>
+
+  <!-- FULL SCREEN: Info Riwayat Pembayaran -->
+  <div id="paymentScreen" class="payment-screen hidden">
+    <div class="payment-header">
+      <div id="paymentBack" class="payment-back">‹</div>
+      <div class="payment-title">Info Riwayat Pembayaran</div>
+    </div>
+
+    <div class="payment-tabs">
+      <div class="payment-tab active">Pembayaran Iuran</div>
+      <div class="payment-tab">Pembayaran Denda</div>
+    </div>
+
+    <div class="payment-list">
+      <!-- Card 1 -->
+      <div class="pay-card">
+        <div class="pay-card-header">STEFANUS BENHARD</div>
+        <div class="pay-card-body">
+          <div class="pay-row">
+            <div class="pay-label">
+              <div class="pay-icon blue">💳</div>
+              <span>Pembayaran</span>
+            </div>
+            <div class="pay-value">Rp 35.000</div>
+          </div>
+          <div class="pay-row">
+            <div class="pay-label">
+              <div class="pay-icon pink">🧾</div>
+              <span>Channel</span>
+            </div>
+            <div class="pay-value">BNI2</div>
+          </div>
+          <div class="pay-row">
+            <div class="pay-label">
+              <div class="pay-icon blue">📅</div>
+              <span>Tgl Bayar</span>
+            </div>
+            <div class="pay-value">05-02-2025 09:18</div>
+          </div>
+          <div class="pay-row">
+            <div class="pay-label">
+              <div class="pay-icon green">✅</div>
+              <span>Status</span>
+            </div>
+            <div class="pay-value">Lunas</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="pay-card">
+        <div class="pay-card-header">STEFANUS BENHARD</div>
+        <div class="pay-card-body">
+          <div class="pay-row">
+            <div class="pay-label">
+              <div class="pay-icon blue">💳</div>
+              <span>Pembayaran</span>
+            </div>
+            <div class="pay-value">Rp 35.000</div>
+          </div>
+          <div class="pay-row">
+            <div class="pay-label">
+              <div class="pay-icon pink">🧾</div>
+              <span>Channel</span>
+            </div>
+            <div class="pay-value">BNI2</div>
+          </div>
+          <div class="pay-row">
+            <div class="pay-label">
+              <div class="pay-icon blue">📅</div>
+              <span>Tgl Bayar</span>
+            </div>
+            <div class="pay-value">09-01-2025 11:43</div>
+          </div>
+          <div class="pay-row">
+            <div class="pay-label">
+              <div class="pay-icon green">✅</div>
+              <span>Status</span>
+            </div>
+            <div class="pay-value">Lunas</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="pay-card">
+        <div class="pay-card-header">STEFANUS BENHARD</div>
+        <div class="pay-card-body">
+          <div class="pay-row">
+            <div class="pay-label">
+              <div class="pay-icon blue">💳</div>
+              <span>Pembayaran</span>
+            </div>
+            <div class="pay-value">Rp 35.000</div>
+          </div>
+          <div class="pay-row">
+            <div class="pay-label">
+              <div class="pay-icon pink">🧾</div>
+              <span>Channel</span>
+            </div>
+            <div class="pay-value">SYB MANDIRI</div>
+          </div>
+          <div class="pay-row">
+            <div class="pay-label">
+              <div class="pay-icon blue">📅</div>
+              <span>Tgl Bayar</span>
+            </div>
+            <div class="pay-value">09-12-2024 08:54</div>
+          </div>
+          <div class="pay-row">
+            <div class="pay-label">
+              <div class="pay-icon green">✅</div>
+              <span>Status</span>
+            </div>
+            <div class="pay-value">Lunas</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="pay-card">
+        <div class="pay-card-header">STEFANUS BENHARD</div>
+        <div class="pay-card-body">
+          <div class="pay-row">
+            <div class="pay-label">
+              <div class="pay-icon blue">💳</div>
+              <span>Pembayaran</span>
+            </div>
+            <div class="pay-value">Rp 35.000</div>
+          </div>
+          <div class="pay-row">
+            <div class="pay-label">
+              <div class="pay-icon pink">🧾</div>
+              <span>Channel</span>
+            </div>
+            <div class="pay-value">BNI2</div>
+          </div>
+          <div class="pay-row">
+            <div class="pay-label">
+              <div class="pay-icon blue">📅</div>
+              <span>Tgl Bayar</span>
+            </div>
+            <div class="pay-value">10-11-2024 17:29</div>
+          </div>
+          <div class="pay-row">
+            <div class="pay-label">
+              <div class="pay-icon green">✅</div>
+              <span>Status</span>
+            </div>
+            <div class="pay-value">Lunas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FULL SCREEN: Perubahan Data Peserta -->
+  <div id="participantScreen" class="participant-screen hidden">
+    <div class="participant-header">
+      <div id="participantBack" class="participant-back">‹</div>
+      <div class="participant-title">Perubahan Data Peserta</div>
+    </div>
+
+    <div class="participant-content">
+      <!-- Kartu Indonesia Sehat -->
+      <div class="kis-card">
+        <div class="kis-title">Kartu Indonesia Sehat</div>
+        <div class="kis-body">
+          <div class="kis-row">
+            <span>Faskes Tk. I</span><span id="kisFaskesText">KLINIK PRATAMA IRFANI</span>
+          </div>
+          <div class="kis-row">
+            <span>Nama</span><span>STEFANUS BENHARD</span>
+          </div>
+          <div class="kis-row">
+            <span>Alamat</span>
+            <span>UNIVERSITAS BINA NUSANTARA, KEBON JERUK KOTA JAKARTA BARAT</span>
+          </div>
+          <div class="kis-row">
+            <span>Tgl Lahir</span><span>XX-XX-2000</span>
+          </div>
+          <div class="kis-row">
+            <span>NIK</span><span>71710802XXXXXXXX</span>
+          </div>
+          <div class="kis-row">
+            <span>Faskes Tk. I</span><span>KLINIK PRATAMA IRFANI</span>
+          </div>
+
+          <div class="kis-small">
+            1. Kartu KIS digital harap dibawa ketika berobat<br/>
+            2. Apabila kartu ini disalahgunakan akan dikenakan sanksi<br/>
+            3. Apabila ada perubahan data, silakan menghubungi BPJS Kesehatan
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Peserta -->
+      <div class="participant-data-card">
+        <div class="data-header">
+          <div class="data-header-left">
+            <div class="data-header-icon">👷‍♂️</div>
+            <div class="data-header-title">Pekerja Penerima Upah</div>
+          </div>
+          <div class="data-header-chevron">›</div>
+        </div>
+
+        <div class="data-section">
+          <div class="data-label">Nomor Handphone</div>
+          <div class="data-row">
+            <div class="data-main">
+              <span class="data-main-icon">📞</span>
+              <div class="data-main-text">085157010209</div>
+            </div>
+            <div class="data-row-chevron">›</div>
+          </div>
+        </div>
+
+        <div class="data-section">
+          <div class="data-label">Email</div>
+          <div class="data-row">
+            <div class="data-main">
+              <span class="data-main-icon">✉️</span>
+              <div class="data-main-text">benhardstefanus@gmail.com</div>
+            </div>
+            <div class="data-row-chevron">›</div>
+          </div>
+        </div>
+
+        <div class="data-section">
+          <div class="data-label">Alamat Surat</div>
+          <div class="data-row">
+            <div class="data-main">
+              <span class="data-main-icon">🏠</span>
+              <div class="data-main-text">
+                UNIVERSITAS BINA NUSANTARA, KEBON JERUK KOTA JAKARTA BARAT,<br/>
+                KEC. PALMERAH, KOTA JAKARTA BARAT, 00000
+                <div class="data-sub">Update : 21-03-2018</div>
+              </div>
+            </div>
+            <div class="data-row-chevron">›</div>
+          </div>
+        </div>
+
+        <div class="data-section" id="faskesChangeRow">
+          <div class="data-label">Fasilitas Kesehatan Tingkat I</div>
+          <div class="data-row">
+            <div class="data-main">
+              <span class="data-main-icon">👨‍⚕️</span>
+              <div class="data-main-text">
+                <span id="participantFaskesText">KLINIK PRATAMA IRFANI</span>
+                <div class="data-sub" id="participantFaskesUpdate">Update : 01-01-2025</div>
+              </div>
+            </div>
+            <div class="data-row-chevron">›</div>
+          </div>
+        </div>
+
+        <div class="data-section">
+          <div class="data-label">Kelas</div>
+          <div class="data-row">
+            <div class="data-main">
+              <span class="data-main-icon">👥</span>
+              <div class="data-main-text">
+                I (SATU)
+                <div class="data-sub">Update : 01-03-2025</div>
+              </div>
+            </div>
+            <div class="data-row-chevron">›</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUEUE TYPE MODAL -->
+  <div class="overlay" id="queueModal">
+    <div class="modal">
+      <h2>Pilih Jenis Antrean</h2>
+      <div class="option" onclick="openFaskes(event)">
+        <div class="option-left"><span>🏥</span>Faskes Tingkat Pertama</div>
+        <div class="option-right">›</div>
+      </div>
+      <div class="option">
+        <div class="option-left"><span>🏩</span>Faskes Rujukan Tingkat Lanjut</div>
+        <div class="option-right">›</div>
+      </div>
+      <div class="option">
+        <div class="option-left"><span>🏢</span>Kantor Cabang</div>
+        <div class="option-right">›</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FASKES FORM + TICKET MODAL -->
+  <div class="overlay" id="faskesModal">
+    <div class="modal form-modal">
+      <!-- FORM VIEW -->
+      <div id="formView">
+        <div class="modal-header">
+          <span class="back-btn" onclick="closeFaskes(event)">‹</span>
+          <h2>Fasilitas Kesehatan Tingkat Pertama</h2>
+        </div>
+
+        <div class="form-section">
+          <label>Peserta</label>
+          <div class="input-box">
+            STEFANUS BENHARD (0002441857634)
+            <span class="dropdown">▾</span>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <label>Faskes Tingkat Pertama</label>
+          <div class="faskes-box">
+            <div class="faskes-title" id="queueFaskesName">KLINIK PRATAMA IRFANI</div>
+            <div class="faskes-detail">
+              <span>🏠 Alamat</span>
+              <p id="queueFaskesAddress">JALAN KEMANGGISAN RAYA BLOK B3</p>
+            </div>
+            <div class="faskes-detail">
+              <span>📞 Telepon</span>
+              <p id="queueFaskesPhone">0812-10045504</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <label>Pilih Poli</label>
+          <div class="select">
+            <select id="poliSelect" class="select-box">
+              <option selected>Poli Umum</option>
+              <option>Poli KIA</option>
+              <option>Poli KB</option>
+              <option>Poli Gigi &amp; Mulut</option>
+              <option>Laboratorium</option>
+              <option>Kunjungan Online</option>
+              <option>Home Visit</option>
+            </select>
+            <span class="dropdown">▾</span>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <label>Pilih Tanggal Daftar</label>
+          <div class="select">
+            <select id="tanggalSelect" class="select-box"></select>
+            <span class="dropdown">▾</span>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <label>Pilih Jadwal</label>
+          <div id="tenagaBox" class="input-box" onclick="openDoctorModal(event)">
+            Pilih Tenaga Medis<span class="dropdown">▾</span>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <label>Keluhan</label>
+          <textarea id="keluhanInput" class="textarea" placeholder="Silakan isi keluhan..."></textarea>
+        </div>
+
+        <button id="saveButton" class="save-btn">Simpan</button>
+      </div>
+
+      <!-- TICKET VIEW -->
+      <div id="ticketView" class="hidden">
+        <div class="modal-header">
+          <span class="back-btn" onclick="closeFaskes(event)">‹</span>
+          <h2>Fasilitas Kesehatan Tingkat Pertama</h2>
+        </div>
+
+        <div class="ticket-card">
+          <div class="ticket-faskes">
+            <div class="ticket-faskes-name" id="ticketFaskesName">KLINIK PRATAMA IRFANI</div>
+            <div class="ticket-faskes-row">
+              <span>🏠 Alamat</span>
+              <span id="ticketFaskesAddress">JALAN KEMANGGISAN RAYA BLOK B3</span>
+            </div>
+            <div class="ticket-faskes-row">
+              <span>📞 Telepon</span>
+              <span id="ticketFaskesPhone">0812-1004-5504</span>
+            </div>
+          </div>
+
+          <div class="ticket-info-card">
+            <div class="ticket-info-row">
+              <span>Poli</span>
+              <span id="ticketPoli">Poli Umum</span>
+            </div>
+            <div class="ticket-info-row">
+              <span>Tanggal Kunjungan</span>
+              <span id="ticketTanggal">11-11-2025</span>
+            </div>
+            <div class="ticket-info-row">
+              <span>Keluhan</span>
+              <span id="ticketKeluhan">-</span>
+            </div>
+            <div class="ticket-info-row">
+              <span>Tenaga Medis</span>
+              <span id="ticketDokter">YULIA NOVITA</span>
+            </div>
+            <div class="ticket-info-row">
+              <span>Jadwal</span>
+              <span id="ticketJam">09:00 - 21:00</span>
+            </div>
+
+            <div class="ticket-number-block">
+              <div class="ticket-number-title">Nomor Antrean</div>
+              <div class="ticket-number">A001</div>
+              <div class="ticket-queue-row">
+                <div>
+                  <div class="ticket-queue-label">Sisa Antrean</div>
+                  <div class="ticket-queue-value" id="ticketSisa">1</div>
+                </div>
+                <div>
+                  <div class="ticket-queue-label">Peserta Dilayani</div>
+                  <div class="ticket-queue-value" id="ticketDilayani">-</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button id="cancelButton" class="cancel-btn" onclick="cancelQueue()">Batalkan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOCTOR LIST MODAL -->
+  <div class="overlay" id="doctorModal">
+    <div class="modal" style="padding:0; overflow:hidden;">
+      <h2 style="margin:0; padding:16px; text-align:center;
+                 color:#fff; background:linear-gradient(100deg,#0a84ff,#DC3378);
+                 border-top-left-radius:24px; border-top-right-radius:24px;">
+        Daftar Tenaga Medis
+      </h2>
+      <div style="padding:16px">
+        <div class="doctor-card doc-card" onclick="selectDoctor('dr. YUSLIANA','09:00 - 10:00')">
+          <div class="doctor-header">
+            <span>YUSLIANA</span>
+            <span>09:00 - 10:00</span>
+            <span class="status-open">BUKA</span>
+          </div>
+          <div class="doctor-body">
+            <div><div>Antrean Diambil</div><strong class="ambil">0</strong></div>
+            <div style="border-left:1px solid #cbd5e1; height:40px;"></div>
+            <div><div>Sisa Antrean</div><strong class="sisa">0</strong></div>
+            <div style="text-align:right;"><div>Antrean Panggil</div><strong class="panggil">0</strong></div>
+          </div>
+        </div>
+
+        <div class="doctor-card doc-card" onclick="selectDoctor('dr. LUTFI','10:00 - 11:00')">
+          <div class="doctor-header">
+            <span>LUTFI</span>
+            <span>10:00 - 11:00</span>
+            <span class="status-open">BUKA</span>
+          </div>
+          <div class="doctor-body">
+            <div><div>Antrean Diambil</div><strong class="ambil">0</strong></div>
+            <div style="border-left:1px solid #cbd5e1; height:40px;"></div>
+            <div><div>Sisa Antrean</div><strong class="sisa">0</strong></div>
+            <div style="text-align:right;"><div>Antrean Panggil</div><strong class="panggil">0</strong></div>
+          </div>
+        </div>
+
+        <div class="doctor-card doc-card" onclick="selectDoctor('dr. OWEN','11:00 - 12:00')">
+          <div class="doctor-header">
+            <span>OWEN</span>
+            <span>11:00 - 12:00</span>
+            <span class="status-open">BUKA</span>
+          </div>
+          <div class="doctor-body">
+            <div><div>Antrean Diambil</div><strong class="ambil">0</strong></div>
+            <div style="border-left:1px solid #cbd5e1; height:40px;"></div>
+            <div><div>Sisa Antrean</div><strong class="sisa">0</strong></div>
+            <div style="text-align:right;"><div>Antrean Panggil</div><strong class="panggil">0</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHANGE FASKES MODAL -->
+  <div class="overlay" id="changeFaskesModal">
+    <div class="modal change-faskes-modal">
+      <div class="change-header">
+        <div class="change-title">Perubahan Faskes I</div>
+        <div class="change-close" onclick="closeChangeFaskes(event)">✕</div>
+      </div>
+
+      <div class="change-body">
+        <label class="checkbox-row">
+          <input type="checkbox" id="chkSatuKeluarga">
+          <span>Perubahan Satu Keluarga</span>
+        </label>
+
+        <p class="change-info">
+          Perubahan Fasilitas Kesehatan dapat dilakukan minimal 3 Bulan sekali.
+        </p>
+
+        <div class="form-section">
+          <label>Provinsi</label>
+          <div class="select">
+            <select id="provinsiSelect" class="select-box">
+              <option value="">Pilih Provinsi</option>
+            </select>
+            <span class="dropdown">▾</span>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <label>Kota / Kabupaten</label>
+          <div class="select">
+            <select id="kotaSelect" class="select-box">
+              <option value="">Pilih Kota / Kabupaten</option>
+            </select>
+            <span class="dropdown">▾</span>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <label>Fasilitas Kesehatan</label>
+          <div class="select">
+            <select id="faskesSelectChange" class="select-box">
+              <option value="">Pilih Fasilitas Kesehatan</option>
+            </select>
+            <span class="dropdown">▾</span>
+          </div>
+        </div>
+
+        <button class="save-btn" onclick="applyFaskesChange(event)">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="mobile_jkn.js"></script>
+</body>
+</html>

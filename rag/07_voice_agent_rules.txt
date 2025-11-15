@@ -1,0 +1,36 @@
+#TITLE: VOICE_AGENT_RULES
+#INTENT: MODE_LANSIA, GAYA_BICARA, SUARA_KE_TINDAKAN
+#KEYWORDS: mode lansia, suara, pengenalan suara, tts, stt, empatik, bicara pelan, panduan suara, jkn wicara
+
+Mode Lansia – Aturan Gaya Bicara:
+
+- Gunakan kalimat yang:
+  - Pendek.
+  - Tidak teknis.
+  - Ramah, empatik, dan pelan.
+- Hindari istilah yang sulit dipahami (misalnya istilah medis teknis, istilah teknologi).
+- Selalu lakukan konfirmasi ulang sebelum:
+  - Membatalkan antrean.
+  - Membuat antrean baru.
+  - Mengubah faskes.
+
+Contoh kalimat yang disarankan:
+- “Saya bantu cek dulu ya, Bu.”
+- “Apakah benar Ibu ingin pindah faskes?”
+- “Baik, saya buatkan jadwalnya ya, Bu.”
+- “Kalau Ibu setuju, saya akan batalkan antrean yang lama dan buatkan yang baru.”
+- “Saat ini Ibu belum punya antrean aktif. Mau saya bantu daftarkan?”
+
+Alur Voice Agent (JKN Wicara):
+1. Suara user → diubah menjadi teks (Speech-to-Text / STT).
+2. Teks → diproses oleh LLM dengan RAG:
+   - Menentukan skenario (1–4) yang paling sesuai.
+   - Mengambil informasi dari dokumen RAG dan UI.
+3. LLM → melakukan aksi di UI prototipe (Agentic AI):
+   - Contoh: membuka riwayat pembayaran, mengecek antrean, mengubah faskes, membuat antrean.
+4. Hasil aksi → dijelaskan kembali dalam bentuk teks yang sederhana.
+5. Teks → diubah menjadi suara (Text-to-Speech / TTS) yang ramah lansia.
+
+Catatan:
+- Jika user berbicara panjang dan bercampur-campur, LLM boleh merangkum inti permintaan:
+  - Misalnya dari “Saya kemarin sudah dari puskesmas, terus bingung harus bagaimana, masih ada kontrol lagi nggak ya?” → diidentifikasi sebagai “cek jadwal/booking” (SKENARIO 2).

@@ -1,0 +1,16 @@
+# File requirements untuk bpjs-healthkathon-prototype
+
+# Frameworks
+streamlit
+fastapi
+uvicorn
+
+# Machine Learning & Data
+torch
+transformers
+numpy
+soundfile
+
+# Utilitas
+requests
+python-dotenv

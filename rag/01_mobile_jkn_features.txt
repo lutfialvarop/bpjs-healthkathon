@@ -1,0 +1,41 @@
+#TITLE: MOBILE_JKN_FEATURES
+#INTENT: FITUR_APLIKASI, GAMBARAN_UMUM
+#KEYWORDS: mobile jkn, fitur, kepesertaan, kartu digital, antrean online, fktp, faskes tingkat pertama, pembayaran, rehab, skrining, mode lansia, jkn wicara
+
+Mobile JKN menyediakan fitur-fitur utama berikut:
+
+- Informasi kepesertaan:
+  - Status peserta, nomor kartu, dan data keluarga.
+- Kartu Digital JKN:
+  - Dapat digunakan saat berobat di faskes.
+- Riwayat Tagihan dan Pembayaran iuran:
+  - Menampilkan periode tagihan, nominal, kanal pembayaran, dan status (lunas/belum).
+- Pendaftaran Pelayanan FKTP (Fasilitas Kesehatan Tingkat Pertama / Faskes TK1):
+  - Mengambil nomor antrean online untuk berobat di faskes.
+- Pengambilan nomor antrean online di Faskes Tingkat Pertama:
+  - Menentukan tanggal kunjungan, poli, dan keluhan.
+- Perubahan Data Peserta:
+  - Misalnya alamat, nomor telepon (di luar cakupan skenario agentic saat ini).
+- Perubahan Faskes Tingkat Pertama:
+  - Memindahkan faskes TK1 peserta ke fasilitas yang lebih sesuai.
+- Layanan konsultasi online di faskes tertentu (jika tersedia).
+- Skrining Riwayat Kesehatan:
+  - Kuesioner untuk menilai risiko penyakit tertentu.
+- Cek ketersediaan tempat tidur di rumah sakit mitra BPJS (informasi umum, tidak dipakai di skenario agentic ini).
+- Pengaduan dan permintaan informasi layanan JKN.
+- Fitur REHAB (Rencana Pembayaran Bertahap):
+  - Membantu mensimulasikan skema pembayaran iuran tertunggak.
+
+FOKUS FITUR UNTUK AGENTIC AI (empat skenario utama):
+1. Membaca Riwayat Pembayaran iuran.
+2. Mengecek antrean / booking aktif untuk kontrol atau kunjungan FKTP.
+3. Mengecek dan mengubah Faskes Tingkat Pertama peserta.
+4. Membuat atau membatalkan antrean FKTP (pendamping rujukan).
+
+MODE LANSIA / JKN WICARA:
+- Antarmuka disederhanakan:
+  - Satu tombol mikrofon besar untuk berbicara.
+- Suara user (STT) → diproses LLM + RAG → diubah kembali menjadi suara (TTS).
+- Tugas utama agentic AI:
+  - Mengubah “suara menjadi tindakan” di dalam aplikasi:
+    - Cek iuran, cek antrean, ubah faskes, buat antrean.

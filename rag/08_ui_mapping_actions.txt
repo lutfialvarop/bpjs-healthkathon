@@ -1,0 +1,77 @@
+#TITLE: UI_MAPPING_ACTIONS
+#INTENT: UI_ACTIONS, MAP_ANTARMUKA, AGENTIC_UI
+#KEYWORDS: ui, selector, buka halaman, klik tombol, isi form, simpan, batalkan, payment screen, faskes modal, ticket, antrean
+
+Pemetaan Aksi LLM ke UI Prototipe Mobile JKN:
+
+1. Membuka Riwayat Pembayaran (Skenario 1)
+   - Aksi: Open Payment Screen
+   - Selector utama:
+     - #paymentScreen
+   - Gunakan saat user meminta:
+     - “Riwayat pembayaran”
+     - “Cek pembayaran”
+     - “Cek iuran saya”
+   - Setelah layar terbuka, LLM hanya membacakan data yang tampil di sana.
+
+2. Mengecek Active Request / Booking (Skenario 2)
+   - Aksi: Cek Antrean Aktif FKTP
+   - Alur UI:
+     - Buka halaman antrean FKTP (misalnya layar “Ambil Antrean → Faskes Tingkat 1”).
+   - Selector yang bisa digunakan (contoh, sesuaikan dengan implementasi):
+     - Kontainer tiket aktif: #ticketView
+     - Tanggal: #ticketTanggal
+     - Jam: #ticketJam
+     - Poli: #ticketPoli
+     - Faskes: #ticketFaskesName (atau setara)
+     - Keluhan: #ticketKeluhan
+     - Tenaga medis: #ticketTenagaMedis
+     - Nomor antrean: #ticketNumber
+     - Sisa antrean: #ticketSisa
+   - Jika kontainer tiket aktif kosong / tidak tampil:
+     - Artinya TIDAK ADA ACTIVE REQUEST.
+
+3. Membuat / Membatalkan Request Antrean FKTP (Skenario 4)
+   - Aksi untuk pembatalan:
+     - Tombol pembatalan pada tampilan tiket, misalnya:
+       - #cancelTicketButton atau #deleteTicketButton (sesuaikan dengan ID sebenarnya).
+   - Aksi untuk membuat request baru:
+     - Form pendaftaran antrean FKTP:
+       - Tanggal kunjungan: #requestTanggal
+       - Poli: #requestPoli
+       - Keluhan: #requestKeluhan
+       - Faskes (label): #requestFaskesLabel atau membaca dari #queueFaskesName
+     - Pemilihan tenaga medis/dokter:
+       - Modal daftar dokter/tenaga medis (misalnya #doctorModal atau #tenagaModal).
+       - Pilihan dokter di dalam modal (misalnya elemen list).
+     - Tombol submit / daftar:
+       - #saveButton (atau setara).
+   - Setelah submit:
+     - Data antrean baru biasanya tampil di kontainer tiket seperti di poin (2).
+
+4. Mengecek / Menampilkan Faskes Aktif (Skenario 3)
+   - Selector teks faskes aktif:
+     - #kisFaskesText
+     - #participantFaskesText
+     - #queueFaskesName
+   - LLM menggunakan teks dari elemen-elemen tersebut untuk menjelaskan faskes TK1 user.
+
+5. Mengubah Faskes TK1 (Skenario 3)
+   - Aksi: Buka modal perubahan faskes:
+     - #changeFaskesModal
+   - Form perubahan faskes:
+     - #provinsiSelect
+     - #kotaSelect
+     - #faskesSelectChange
+   - Tombol untuk menyimpan perubahan:
+     - Tombol Save/OK di dalam #changeFaskesModal.
+   - Setelah perubahan:
+     - Pastikan teks di:
+       - #kisFaskesText
+       - #participantFaskesText
+       - #queueFaskesName
+     sudah ter-update.
+
+Catatan Umum:
+- Nama selector di atas adalah GUIDELINE. Jika implementasi aktual berbeda, developer dapat menyesuaikan ID/selector, sementara struktur RAG tetap sama.
+- LLM tidak perlu menyebut nama selector secara eksplisit kepada user; selector digunakan untuk mengarahkan aksi agentic di UI.

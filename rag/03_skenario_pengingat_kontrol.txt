@@ -1,0 +1,89 @@
+#TITLE: SKENARIO_2_PENGINGAT_KONTROL
+#INTENT: PENGINGAT_KONTROL, CEK_BOOKING, CEK_ANTREAN_AKTIF, CEK_JADWAL
+#KEYWORDS: pengingat kontrol, booking, antrean aktif, jadwal kontrol, jadwal saya, cek jadwal, jadwal besok, cek antrian saya, apakah saya punya booking, faskes tingkat satu, cek antrean faskes, jadwal faskes, jadwal kaskus, jadwal kasus, kontrol besok
+
+Skenario 2: Pengingat Kontrol (Cek Active Request / Booking / Jadwal Faskes)
+
+Deskripsi:
+- Digunakan ketika user ingin mengecek:
+  - Apakah dia sudah punya antrean/jadwal/booking aktif di Faskes Tingkat Pertama (Faskes TK1).
+  - Detail jadwal kunjungannya (tanggal, jam, poli, faskes, dsb).
+- Contoh ucapan user:
+  - “Apakah saya punya booking?”
+  - “Cek antrean saya.”
+  - “Kapan jadwal kontrol saya?”
+  - “Cek faskes tingkat satu apakah saya ada jadwalnya besok.”
+  - “Untuk dicek apakah saya mempunyai jadwal faskes.”
+  - “Saya besok ada jadwal di puskesmas nggak?”
+  - (Termasuk salah dengar STT seperti: “jadwal kaskus”, “jadwal kasus” → tetap diperlakukan sebagai permintaan cek jadwal faskes.)
+
+Tujuan:
+- Memberi tahu user:
+  - Apakah ada ACTIVE REQUEST di FKTP.
+  - Jika ada, detailnya:
+    - Tanggal & jam kunjungan.
+    - Poli.
+    - Faskes.
+    - Tenaga medis/dokter (jika ada).
+    - Keluhan.
+    - Nomor antrean.
+    - Sisa antrean (jika tersedia di UI).
+
+Langkah LLM:
+
+1. Membuka tampilan antrean/booking FKTP:
+   - Gunakan UI Mapping untuk membuka layar antrean Faskes Tingkat 1.
+   - Contoh selector:
+     - Kontainer tiket aktif: #ticketView
+     - Tanggal: #ticketTanggal
+     - Jam: #ticketJam
+     - Poli: #ticketPoli
+     - Faskes: #ticketFaskesName
+     - Keluhan: #ticketKeluhan
+     - Tenaga medis: #ticketTenagaMedis
+     - Nomor antrean: #ticketNumber
+     - Sisa antrean: #ticketSisa
+
+2. Cek apakah ADA ACTIVE REQUEST:
+   - Jika kontainer tiket aktif ADA dan terisi:
+     - Anggap user memiliki booking/jadwal aktif.
+   - Jika kontainer antrean kosong / tidak ada tiket:
+     - Anggap user TIDAK memiliki booking/jadwal aktif.
+
+3. Jika ADA ACTIVE REQUEST:
+   - Baca dan rangkum semua informasi penting:
+     - “Saat ini Anda memiliki jadwal di Faskes Tingkat Pertama.”
+     - Tanggal kunjungan.
+     - Jam kunjungan.
+     - Poli.
+     - Nama faskes.
+     - Tenaga medis (jika ada).
+     - Keluhan yang tercatat.
+     - Nomor antrean & sisa antrean (kalau tersedia).
+   - Contoh jawaban:
+     - “Saat ini Anda punya jadwal di Faskes Tingkat 1, Puskesmas X, pada tanggal 12 November 2025 pukul 09.00 di Poli Umum dengan nomor antrean A015.”
+   - Jika user kemudian bertanya:
+     - “Kalau mau ganti tanggal bagaimana?”
+     → Jelaskan bahwa antrean lama harus dibatalkan dulu, kemudian tawarkan pindah ke SKENARIO 4 (Pendamping Rujukan) untuk membuat antrean baru.
+
+4. Jika TIDAK ADA ACTIVE REQUEST:
+   - Jawab dengan tegas:
+     - “Saat ini Anda belum memiliki jadwal atau antrean aktif di Faskes Tingkat 1.”
+   - Tambahkan tawaran:
+     - “Apakah Anda ingin saya bantu mendaftarkan antrean baru di Faskes Tingkat 1?”
+   - Jika user setuju:
+     - Alihkan ke SKENARIO 4 (Pendamping Rujukan).
+   - Jika user menolak:
+     - Cukup akhiri dengan:
+       - “Baik, jika nanti Anda ingin membuat antrean, silakan beritahu saya.”
+
+Batasan:
+- Dalam skenario ini, LLM TIDAK BOLEH:
+  - Mengatakan bahwa dia “tidak dapat mengecek jadwal atau antrean”.
+  - Langsung membuat antrean baru TANPA menjawab dulu status jadwal user saat ini.
+- Fokus utama skenario ini:
+  - MENJAWAB pertanyaan “apakah saya punya jadwal/booking/antrean?” dan menjelaskan detailnya jika ada.
+- Jika user bertanya hal lain di luar jadwal/booking (misalnya “dokter mana yang paling bagus”, “obat apa yang harus saya minum”):
+  - Ikuti SYSTEM_RULES:
+    - Jika di luar cakupan → gunakan template out-of-scope:
+      “Maaf, saya tidak menemukan informasi tersebut pada data resmi BPJS atau Mobile JKN.”
